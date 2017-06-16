@@ -76,7 +76,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ArgumentParser.cs" />
     <Compile Include="CmdInterpreter.cs" />
     <Compile Include="Command.cs" />
     <Compile Include="Boot.cs" />
