@@ -1,0 +1,1 @@
+@copy %~dp0\Discorder\bin\Debug\Discorder.dll %~dp0\UDIMAS\bin\Debug\plugins\Discorder.dll /Y

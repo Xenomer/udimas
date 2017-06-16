@@ -1,0 +1,1 @@
+@copy %~dp0\UDINet\bin\Debug\UDINet.exe %~dp0\UDIMAS\bin\Debug\plugins\UDINet.exe /Y

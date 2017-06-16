@@ -1,0 +1,1 @@
+@copy %~dp0\Documenter\bin\Debug\Documenter.dll %~dp0\UDIMAS\bin\Debug\plugins\Documenter.dll /Y
