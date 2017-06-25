@@ -23,7 +23,7 @@ namespace Discorder
             CmdInterpreter.RegisterCommand(new TerminalCommand("discorder", Terminal));
         }
 
-        private static (int, string) Terminal(TextWriter tw, string[] a)
+        private static (int, string) Terminal(InterpreterIOPipeline tw, string[] a)
         {
             bool invalidArgs = false;
             if (CmdInterpreter.IsWellFormatterArguments(a, "-h"))

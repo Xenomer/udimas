@@ -6,9 +6,15 @@ using System.Threading.Tasks;
 
 namespace UDIMAS
 {
+    /// <summary>
+    /// UDIMAS external (.NET dll/exe) plugin. Put this into your plugin and throw it into /plugins/ folder
+    /// </summary>
     [IronPython.Runtime.PythonHidden]
     public abstract class UdimasExternalPlugin
     {
+        /// <summary>
+        /// Instantiates Udimas plugin instance
+        /// </summary>
         public UdimasExternalPlugin() { }
 
         /// <summary>

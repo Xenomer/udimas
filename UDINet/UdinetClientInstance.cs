@@ -13,5 +13,9 @@ namespace UDINet
         {
             Console.Write(data);
         }
+        public string ReadLine()
+        {
+            return Console.ReadLine();
+        }
     }
 }

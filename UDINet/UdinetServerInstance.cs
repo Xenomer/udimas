@@ -13,7 +13,7 @@ namespace UDINet
     {
         public CommandReturnObject Execute(string cmd, string[] args)
         {
-            var i = new CmdInterpreter("RCI",  new RCIWriter() { service = CurrentClient }, false);
+            var i = new CmdInterpreter("RCI",  new RCIWriter() { service = CurrentClient });
             return new CommandReturnObject(i.UserInput(cmd, args));
         }
     }

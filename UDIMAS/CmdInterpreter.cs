@@ -9,6 +9,9 @@ using NDesk.Options;
 
 namespace UDIMAS
 {
+    /// <summary>
+    /// An UDIMAS command interpreter
+    /// </summary>
     public sealed class CmdInterpreter
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger
@@ -35,20 +38,25 @@ namespace UDIMAS
         /// </summary>
         public const int COMMANDERROR = 3;
 
-        public CmdInterpreter(string name, TextWriter output, bool supportsInput = true)
+        /// <summary>
+        /// Initializes this <see cref="CmdInterpreter"/> instance with a specified name, command output and whether this instance supports output
+        /// </summary>
+        /// <param name="name">name of this instance</param>
+        /// <param name="output">command output of this instance</param>
+        /// <param name="supportsInput">whether this instance supports console input</param>
+        public CmdInterpreter(string name, InterpreterIOPipeline output)
         {
             Name = name;
             instLog = log4net.LogManager.GetLogger
                 (System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.FullName + "." + Name);
 
-            Output = output??Console.Out;
-            SupportsInput = supportsInput;
+            Output = output??new ConsoleIOPipeline();
         }
 
         /// <summary>
         /// Contains all registered commands
         /// </summary>
-        internal static Dictionary<string, TerminalCommand> _commands = new Dictionary<string, TerminalCommand>();
+        internal static Dictionary<string, TerminalCommand> _commands = new Dictionary<string, TerminalCommand>(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>
         /// Contains this instances name
@@ -58,12 +66,7 @@ namespace UDIMAS
         /// <summary>
         /// Gets the output <see cref="TextWriter"/>
         /// </summary>
-        public readonly TextWriter Output;
-
-        /// <summary>
-        /// Whether this instance supports getting user input
-        /// </summary>
-        public readonly bool SupportsInput;
+        public readonly InterpreterIOPipeline Output;
 
         /// <summary>
         /// Globally registers a new command
@@ -82,6 +85,13 @@ namespace UDIMAS
             log.Debug("Registered new command: " + command.Command);
         }
 
+        /// <summary>
+        /// Checks whether <paramref name="args"/> matches length of and <paramref name="regexFilters"/>
+        /// </summary>
+        /// <param name="args">arguments that are checked</param>
+        /// <param name="regexFilters">an array containing <see cref="Regex"/> filters. 
+        /// Every <paramref name="args"/> item has to match an item in corresponding position in this array</param>
+        /// <returns>Whether every <paramref name="args"/> item matches every <paramref name="regexFilters"/>. True if it matches, otherwise false</returns>
         public static bool IsWellFormatterArguments(string[] args, params string[] regexFilters)
         {
             if(args.Length != regexFilters.Length)
@@ -159,7 +169,7 @@ namespace UDIMAS
             {
                 instLog.Debug($"Executing command ('{cmd}', '{string.Join(" ", args)}')");
                 (int, string) r;
-                if (!SupportsInput && _commands[cmd].UsesInput)
+                if (!Output.SupportsInput && _commands[cmd].UsesInput)
                 {
                     r = (NOINPUTSUPPORTED, "");
                 }
@@ -175,7 +185,16 @@ namespace UDIMAS
         /// </summary>
         /// <param name="output"></param>
         /// <param name="lines"></param>
-        public static void PrintLines(TextWriter output, string[] lines)
+        public static void PrintLines(InterpreterIOPipeline output, params string[] lines)
+        {
+            output.WriteLine(string.Join(Environment.NewLine, lines));
+        }
+        /// <summary>
+        /// Prints all lines in <paramref name="lines"/> into <paramref name="output"/>
+        /// </summary>
+        /// <param name="output"></param>
+        /// <param name="lines"></param>
+        public static void PrintLines(TextWriter output, params string[] lines)
         {
             output.WriteLine(string.Join(Environment.NewLine, lines));
         }

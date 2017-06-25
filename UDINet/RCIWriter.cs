@@ -6,24 +6,22 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UDIMAS;
 
 namespace UDINet
 {
-    class RCIWriter : TextWriter
+    class RCIWriter : InterpreterIOPipeline
     {
         public IScsServiceClient service;
-        public override Encoding Encoding => Encoding.ASCII;
+        public override bool SupportsInput => false;
+        public override string ReadLine()
+        {
+            return service.GetClientProxy<IUdinetClientService>().ReadLine();
+        }
+
         public override void Write(string value)
         {
             service.GetClientProxy<IUdinetClientService>().Write(value);
-        }
-        public override void WriteLine(string value)
-        {
-            Write(value + Environment.NewLine);
-        }
-        public override void WriteLine()
-        {
-            Write(Environment.NewLine);
         }
     }
 }

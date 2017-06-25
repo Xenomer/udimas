@@ -18,7 +18,7 @@ namespace Documenter
         {
             CmdInterpreter.RegisterCommand(new TerminalCommand("docs", Cmd));
         }
-        private (int, string) Cmd(TextWriter tw, string[] args)
+        private (int, string) Cmd(InterpreterIOPipeline tw, string[] args)
         {
             if (CmdInterpreter.IsWellFormatterArguments(args, "-h|--help"))
             {
@@ -40,7 +40,7 @@ namespace Documenter
             return (0, "");
         }
 
-        private void Generate(TextWriter console, string filter)
+        private void Generate(InterpreterIOPipeline console, string filter)
         {
             //declare directory string before local functions so it can be used in them
             string dir = Path.Combine(Udimas.SystemDirectory, "docs");

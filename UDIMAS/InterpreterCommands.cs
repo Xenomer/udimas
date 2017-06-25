@@ -11,14 +11,14 @@ namespace UDIMAS
 {
     internal static class InterpreterCommands
     {
-        public static (int, string) Help(TextWriter tw, string[] args)
+        public static (int, string) Help(InterpreterIOPipeline tw, string[] args)
         {
             tw.Write("[ ");
             tw.Write(string.Join(", ", CmdInterpreter._commands.Keys));
             tw.WriteLine(" ]");
             return (0, "");
         }
-        public static (int, string) Plugins(TextWriter tw, string[] args)
+        public static (int, string) Plugins(InterpreterIOPipeline tw, string[] args)
         {
             if (CmdInterpreter.IsWellFormatterArguments(args, "-l|--list"))
             {
@@ -65,24 +65,25 @@ namespace UDIMAS
             }
             return (0, "");
         }
-        public static (int, string) Udimas(TextWriter tw, string[] args)
+        public static (int, string) Udimas(InterpreterIOPipeline tw, string[] args)
         {
-            string[] data =
+            string TimeSpanFormatWithTotalHours(TimeSpan ts)
             {
+                return (int)ts.TotalHours + ts.ToString("\\:mm\\:ss");
+            }
+            CmdInterpreter.PrintLines(tw,
                 $"UDIMAS v{Assembly.GetExecutingAssembly().GetName().Version.ToString()}, made by Xenomer",
                 "System time: " + DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss"),
                 "",
-                "Online time: " + UDIMAS.Udimas.SystemUptime.ToString("hh\\:mm\\:ss"),
+                "Online time: " + TimeSpanFormatWithTotalHours(UDIMAS.Udimas.SystemUptime),
                 "System boot time: " + UDIMAS.Udimas.BootTime.ToString(),
                 "",
-                $"Plugins loaded ({PluginHub.plugins.Count} registered): {Core.ExtPluginsLoaded} external, {Core.ScriptPluginsLoaded} scripts",
-
-            };
-            tw.WriteLine(string.Join(tw.NewLine, data));
+                $"Plugins loaded ({PluginHub.plugins.Count} registered): {Core.ExtPluginsLoaded} external, {Core.ScriptPluginsLoaded} scripts"
+                );
 
             return (0, "");
         }
-        public static (int, string) Settings(TextWriter tw, string[] args)
+        public static (int, string) Settings(InterpreterIOPipeline tw, string[] args)
         {
             if (CmdInterpreter.IsWellFormatterArguments(args, "-l|--list"))
             {

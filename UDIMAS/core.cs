@@ -27,6 +27,13 @@ namespace UDIMAS
             log.Debug("Plugins stopped succesfully");
         }
 
+        public static void SetTitle(string title)
+        {
+            if (Udimas.ConsoleExists())
+                Console.Title = 
+                    $"UDIMAS v{System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString()}{(string.IsNullOrWhiteSpace(title) ? "" : " - " + title)}";
+        }
+
         /// <summary>
         /// Synchronously exits
         /// </summary>

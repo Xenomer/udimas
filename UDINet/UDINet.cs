@@ -75,7 +75,7 @@ namespace UDINet
             }
         }
 
-        private (int, string) Cmd(TextWriter tw, string[] a)
+        private (int, string) Cmd(InterpreterIOPipeline tw, string[] a)
         {
             if (CmdInterpreter.IsWellFormatterArguments(a) || // no arguments or -i flag
                 CmdInterpreter.IsWellFormatterArguments(a, "-i|--info"))
@@ -141,7 +141,7 @@ namespace UDINet
         /// The RCI terminal
         /// </summary>
         /// <returns></returns>
-        private (int, string) Terminal(TextWriter tw, string[] a)
+        private (int, string) Terminal(InterpreterIOPipeline tw, string[] a)
         {
             if (CmdInterpreter.IsWellFormatterArguments(a, "[A-Za-z0-9.]+"))
             {

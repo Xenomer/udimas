@@ -144,10 +144,11 @@ using NDesk.Options;
 #endif
 
 namespace NDesk.Options {
-
-	public sealed class OptionValueCollection : IList, IList<string> {
-
-		List<string> values = new List<string> ();
+    #pragma warning disable CS1591
+    #pragma warning disable IDE0018
+    #pragma warning disable IDE0016
+    public sealed class OptionValueCollection : IList, IList<string> {
+        List<string> values = new List<string> ();
 		OptionContext c;
 
 		internal OptionValueCollection (OptionContext c)

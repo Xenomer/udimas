@@ -11,5 +11,6 @@ namespace UDINet
     interface IUdinetClientService
     {
         void Write(string data);
+        string ReadLine();
     }
 }

@@ -24,13 +24,13 @@ copy /B /Y %rbin%\Microsoft.Dynamic.dll %bf%\
 copy /B /Y %rbin%\Microsoft.Scripting.dll %bf%\
 copy /B /Y %rbin%\Microsoft.Scripting.Metadata.dll %bf%\
 copy /B /Y %rbin%\Newtonsoft.Json.dll %bf%\
-copy /B /Y %rbin%\System.Collections.Immutable.dll %bf%\
 
 :: Plugins
 mkdir %bf%\plugins\
 copy /B /Y %srcdir%\UDINet\bin\Release\UDINet.exe %bf%\plugins\
 copy /B /Y %srcdir%\UDINet\bin\Release\Scs.dll %bf%\plugins\
 copy /B /Y %srcdir%\Discorder\bin\Release\Discorder.dll %bf%\plugins\
+copy /B /Y %srcdir%\Documenter\bin\Release\Documenter.dll %bf%\plugins\
 
 echo Build completed into '%f%' folder
 

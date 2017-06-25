@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace UDIMAS
 {
+    /// <summary>
+    /// static class containing utility information about UDIMAS and helper methods
+    /// </summary>
     public static class Udimas
     {
         /// <summary>
@@ -31,7 +34,12 @@ namespace UDIMAS
             BootComplete?.Invoke();
         }
 
+        /// <summary>
+        /// Delegate for <see cref="LogHappened"/>
+        /// </summary>
+        /// <param name="args"></param>
         public delegate void LogEventHandler(LogEventArgs args);
+
         /// <summary>
         /// Raises when a log raises
         /// </summary>
@@ -42,7 +50,7 @@ namespace UDIMAS
         }
 
         /// <summary>
-        /// raises when a log in a plugin raises
+        /// Raises when a log in a plugin raises
         /// </summary>
         public static event LogEventHandler PluginLogHappened;
         internal static void OnPluginLogHappened(LogEventArgs args)
@@ -60,6 +68,9 @@ namespace UDIMAS
         /// </summary>
         public static TimeSpan BootTime { get; internal set; }
 
+        /// <summary>
+        /// Gets the directory UDIMAS executable is in
+        /// </summary>
         public static string SystemDirectory { get { return new System.IO.FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).DirectoryName; } }
 
         /// <summary>
@@ -117,8 +128,7 @@ namespace UDIMAS
         /// <summary>
         /// Executes <paramref name="func"/>. Returns when either <paramref name="func"/> returns or timeout occurs.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="action">Action</param>
+        /// <param name="func">Action</param>
         /// <param name="timeout">Specified timeout</param>
         /// <returns>true if function returned, false if timeout occurred</returns>
         public static bool TryExecute(Action func, int timeout)
@@ -139,5 +149,23 @@ namespace UDIMAS
         /// Gets commands ignored by CmdInterpreter
         /// </summary>
         internal static string[] IgnoredCommands = new string[0];
+
+        /// <summary>
+        /// Checks if the <see cref="Console"/> is present and available to use
+        /// </summary>
+        public static bool ConsoleExists()
+        {
+            bool consoleExists = true;
+            // check if console exists
+            try
+            {
+                Console.WindowWidth.ToString();
+            }
+            catch
+            {
+                consoleExists = false;
+            }
+            return consoleExists;
+        }
     }
 }

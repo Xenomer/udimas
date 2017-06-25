@@ -22,15 +22,19 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>bin\Release\UDIMAS.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>UDIMAS.Boot</StartupObject>
@@ -77,12 +81,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CmdInterpreter.cs" />
-    <Compile Include="Command.cs" />
+    <Compile Include="TerminalCommand.cs" />
     <Compile Include="Boot.cs" />
     <Compile Include="core.cs" />
     <Compile Include="EventArgs.cs" />
     <Compile Include="InterpreterCommands.cs" />
     <Compile Include="ExternalPlugin.cs" />
+    <Compile Include="InterpreterIOPipeline.cs" />
     <Compile Include="LogLevel.cs" />
     <Compile Include="Utilities\Options.cs" />
     <Compile Include="PluginHub.cs" />

@@ -42,6 +42,8 @@ namespace UDIMAS
         /// </summary>
         private static void Main()
         {
+            Core.SetTitle("Booting...");
+
             //if debugger is not attached, catch unhandled exceptions
             if (!Debugger.IsAttached)
                 AppDomain.CurrentDomain.UnhandledException += (s, a) =>
@@ -83,8 +85,6 @@ namespace UDIMAS
 
             log.Warn("Booting UDIMAS..");
 
-            new ArgumentParser(new (string, bool)[] {  }, true).Parse("asd");
-
             var bootTime = new Stopwatch();
             bootTime.Start();
 
@@ -105,6 +105,7 @@ namespace UDIMAS
             Udimas.BootTime = bootTime.Elapsed;
 
             log.Info("Boot complete. Time: " + Udimas.BootTime.ToString());
+            Core.SetTitle("");
 
             Udimas.OnBootComplete();
 
@@ -298,21 +299,11 @@ namespace UDIMAS
 
             log.Info("Initializing console interpreter..");
 
-            bool consoleExists = true;
-            // check if console exists
-            try
-            {
-                Console.WindowWidth.ToString();
-            }
-            catch
-            {
-                log.Error("Error Initializing console interpreter: console not found!");
-                consoleExists = false;
-            }
+            bool consoleExists = Udimas.ConsoleExists();
 
             if (consoleExists)
             {
-                ConsoleInterpreter = new CmdInterpreter("Console", Console.Out);
+                ConsoleInterpreter = new CmdInterpreter("Console", new ConsoleIOPipeline());
                 log.Debug("Console interpreter initialization complete");
 
                 Console.WriteLine($"\nUDIMAS v{Assembly.GetExecutingAssembly().GetName().Version}");
@@ -332,5 +323,6 @@ namespace UDIMAS
                 }
             }
         }
+
     }
 }
