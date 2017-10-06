@@ -3,7 +3,8 @@ UDIMAS (Utility Device Independent MAnagement System) is a system that has suppo
 # Features
  - A simple yet powerful commandline for user-interaction
  - Pretty much no ready made functionality apart from command line so you can tailor it for your own use
- - Allows for method calling from other plugins without dependencies: test if a plugin exists and use it if it does
+ - Allows for method calling from other plugins without dependencies: test if a plugin exists and use it if it does (using [dynamic](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/dynamic) keyword)
+ - Allows execution of [Python](https://www.python.org/) scripts (using [IronPython](http://ironpython.net/)). This allows for dynamic module creation/modification without a compiler.
 
 ## Ready to use plugins
 UDIMAS contains plugins that add possibly useful functionality and that are completely optional to use.
