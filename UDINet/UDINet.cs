@@ -137,6 +137,14 @@ namespace UDINet
             return (CmdInterpreter.SUCCESS, "");
         }
 
+        private T GetOneEndsWith<T>(string input, IDictionary<string, T> dict)
+        {
+            var d = from r in dict where r.Key.EndsWith(input) select r;
+            if (d.Count() <= 1)
+                return d.SingleOrDefault().Value;
+            return default(T);
+        }
+
         /// <summary>
         /// The RCI terminal
         /// </summary>
@@ -145,7 +153,7 @@ namespace UDINet
         {
             if (CmdInterpreter.IsWellFormatterArguments(a, "[A-Za-z0-9.]+"))
             {
-                string ip = a[0];
+                string ip = (GetOneEndsWith(a[0], OnNetwork)?.Ip)??a[0];
                 IScsServiceClient<IUdinetServerService> server;
                 tw.WriteLine($"Connecting to {ip}..");
                 try

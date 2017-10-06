@@ -9,5 +9,5 @@ UDIMAS (Utility Device Independent MAnagement System) is a system that has suppo
 UDIMAS contains plugins that add possibly useful functionality and that are completely optional to use.
 
  - UDINet: A plugin that allows UDIMAS instances to find others on a local network and remote command calling (a homemade telnet)
- - Discorder: Allows for simple messages to be send into [Discord](https://discordapp.com/) Webhooks. ( (Discord Webhooks)[https://support.discordapp.com/hc/en-us/articles/228383668-Intro-to-Webhooks] )
+ - Discorder: Allows for simple messages to be send into [Discord](https://discordapp.com/) Webhooks. ([Discord Webhooks](https://support.discordapp.com/hc/en-us/articles/228383668-Intro-to-Webhooks))
  - Documenter: Allows you to "document" (write signatures for classes and everything within) .NET namespaces. You can even document EVERYTHING inside .NET.

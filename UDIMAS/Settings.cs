@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace UDIMAS
 {
+    #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+    
     /// <summary>
     /// Class used in <see cref="Udimas.Settings"/>
     /// </summary>
     public class Settings : DynamicObject
     {
-        #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public static object CheckValue<T>(dynamic value, object defValue)
-        //#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
         {
             if (value != null && value is T)
             {
@@ -37,9 +37,7 @@ namespace UDIMAS
         internal Dictionary<string, object> dictionary
             = new Dictionary<string, object>();
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public override bool TryGetMember(
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
             GetMemberBinder binder, out object result)
         {
             string name = binder.Name.ToLower();
@@ -48,9 +46,7 @@ namespace UDIMAS
             return true;
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public override bool TrySetMember(
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
             SetMemberBinder binder, object value)
         {
             dictionary[binder.Name.ToLower()] = value;
