@@ -26,7 +26,7 @@ namespace Discorder
         private static (int, string) Terminal(InterpreterIOPipeline tw, string[] a)
         {
             bool invalidArgs = false;
-            if (CmdInterpreter.IsWellFormatterArguments(a, "-h"))
+            if (CmdInterpreter.IsWellFormattedArguments(a, "-h"))
             {
                 tw.WriteLine("Sends a message into a Discord webhook.");
                 tw.WriteLine("Usage:");
@@ -53,7 +53,7 @@ namespace Discorder
 
                 if (url == null || 
                     !Uri.IsWellFormedUriString(url, UriKind.Absolute) ||
-                    //A (very) clumsy way of making sure the named arguments are on front of argument sequence ('-n myname test' not 'test -n myname')
+                    //A clumsy way of making sure the named arguments are on front of argument sequence ('-n myname test' not 'test -n myname')
                     !extra.SequenceEqual(a.Skip(a.Length - extra.Count)))
                     invalidArgs = true; // invalid args
                 else

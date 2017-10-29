@@ -20,14 +20,14 @@ namespace UDIMAS
         }
         public static (int, string) Plugins(InterpreterIOPipeline tw, string[] args)
         {
-            if (CmdInterpreter.IsWellFormatterArguments(args, "-l|--list"))
+            if (CmdInterpreter.IsWellFormattedArguments(args, "-l|--list"))
             {
                 foreach(Plugin plugin in PluginHub.plugins.Values)
                 {
                     tw.WriteLine(plugin.Name);
                 }
             }
-            else if (CmdInterpreter.IsWellFormatterArguments(args, "-f|--full"))
+            else if (CmdInterpreter.IsWellFormattedArguments(args, "-f|--full"))
             {
                 foreach (Plugin plugin in PluginHub.plugins.Values)
                 {
@@ -38,7 +38,7 @@ namespace UDIMAS
                     }
                 }
             }
-            else if(CmdInterpreter.IsWellFormatterArguments(args, "-p|--plugin", "\\w+"))
+            else if(CmdInterpreter.IsWellFormattedArguments(args, "-p|--plugin", "\\w+"))
             {
                 string plugin = args[1];
                 if (!PluginHub.PluginExists(plugin)) return (1, "Plugin does not exist.");
@@ -51,7 +51,7 @@ namespace UDIMAS
                     tw.WriteLine($"  {kvp.Key} ({(kvp.Value?.GetType()).ToString()})");
                 }
             }
-            else if(CmdInterpreter.IsWellFormatterArguments(args, "-h|--help"))
+            else if(CmdInterpreter.IsWellFormattedArguments(args, "-h|--help"))
             {
                 tw.WriteLine("Shows information or lists installed plugins.");
                 tw.WriteLine("Usage:");
@@ -85,14 +85,14 @@ namespace UDIMAS
         }
         public static (int, string) Settings(InterpreterIOPipeline tw, string[] args)
         {
-            if (CmdInterpreter.IsWellFormatterArguments(args, "-l|--list"))
+            if (CmdInterpreter.IsWellFormattedArguments(args, "-l|--list"))
             {
                 foreach (KeyValuePair<string, object> obj in (UDIMAS.Udimas.Settings as Settings).dictionary)
                 {
                     tw.WriteLine($"{obj.Key}={(obj.Value is string ? $"\"{obj.Value}\"" : obj.Value.ToString())}");
                 }
             }
-            else if (CmdInterpreter.IsWellFormatterArguments(args, "-s", @"\w+", @"\S+"))
+            else if (CmdInterpreter.IsWellFormattedArguments(args, "-s", @"\w+", @"\S+"))
             {
                 object obj = args[2];
                 if (args[2].StartsWith("bool|") && bool.TryParse(args[2].Substring(5), out bool bres))
@@ -104,7 +104,7 @@ namespace UDIMAS
                 settings.dictionary[args[1]] = obj;
                 settings.Save();
             }
-            else if (CmdInterpreter.IsWellFormatterArguments(args, "-h|--help"))
+            else if (CmdInterpreter.IsWellFormattedArguments(args, "-h|--help"))
             {
                 CmdInterpreter.PrintLines(tw, new string[] {
                     "Lists or edits UDIMAS settings",

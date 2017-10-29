@@ -77,8 +77,8 @@ namespace UDINet
 
         private (int, string) Cmd(InterpreterIOPipeline tw, string[] a)
         {
-            if (CmdInterpreter.IsWellFormatterArguments(a) || // no arguments or -i flag
-                CmdInterpreter.IsWellFormatterArguments(a, "-i|--info"))
+            if (CmdInterpreter.IsWellFormattedArguments(a) || // no arguments or -i flag
+                CmdInterpreter.IsWellFormattedArguments(a, "-i|--info"))
             {
                 tw.WriteLine("UDINet status:  \t" + (IsListenerRunning ? "Enabled" : "Disabled"));
                 tw.WriteLine("Other instances:\t" + (OnNetwork?.Count??0));
@@ -91,11 +91,11 @@ namespace UDINet
                     tw.WriteLine($"\t{laa.Ip} ({laa.Name})");
                 }
             }
-            else if (CmdInterpreter.IsWellFormatterArguments(a, "-l|--list"))
+            else if (CmdInterpreter.IsWellFormattedArguments(a, "-l|--list"))
             {
                 OnNetwork.Values.ToList().ForEach(x => tw.WriteLine($"[ {x.Ip} ] {x.Name}"));
             }
-            else if (CmdInterpreter.IsWellFormatterArguments(a, "-S|--stop"))
+            else if (CmdInterpreter.IsWellFormattedArguments(a, "-S|--stop"))
             {
                 if (IsListenerRunning)
                 {
@@ -107,7 +107,7 @@ namespace UDINet
                     tw.WriteLine("UDINet is not running");
                 }
             }
-            else if (CmdInterpreter.IsWellFormatterArguments(a, "-s|--start"))
+            else if (CmdInterpreter.IsWellFormattedArguments(a, "-s|--start"))
             {
                 if (!IsListenerRunning)
                 {
@@ -119,7 +119,7 @@ namespace UDINet
                     tw.WriteLine("UDINet is already running");
                 }
             }
-            else if (CmdInterpreter.IsWellFormatterArguments(a, "-h|--help"))
+            else if (CmdInterpreter.IsWellFormattedArguments(a, "-h|--help"))
             {
                 tw.WriteLine("Controls and views statistics of the UDINet system.");
                 tw.WriteLine("Usage:");
@@ -151,7 +151,7 @@ namespace UDINet
         /// <returns></returns>
         private (int, string) Terminal(InterpreterIOPipeline tw, string[] a)
         {
-            if (CmdInterpreter.IsWellFormatterArguments(a, "[A-Za-z0-9.]+"))
+            if (CmdInterpreter.IsWellFormattedArguments(a, "[A-Za-z0-9.]+"))
             {
                 string ip = (GetOneEndsWith(a[0], OnNetwork)?.Ip)??a[0];
                 IScsServiceClient<IUdinetServerService> server;
@@ -199,7 +199,7 @@ namespace UDINet
                 tw.WriteLine("Disconnecting..");
                 server.Disconnect();
             }
-            else if (CmdInterpreter.IsWellFormatterArguments(a.Take(3).ToArray(), "-c|--command", "[A-Za-z0-9.]+", "\\w+"))
+            else if (CmdInterpreter.IsWellFormattedArguments(a.Take(3).ToArray(), "-c|--command", "[A-Za-z0-9.]+", "\\w+"))
             {
                 string ip = a[1];
                 IScsServiceClient<IUdinetServerService> server;
@@ -234,7 +234,7 @@ namespace UDINet
                 }
                 server.Disconnect();
             }
-            else if (CmdInterpreter.IsWellFormatterArguments(a, "-h|--help"))
+            else if (CmdInterpreter.IsWellFormattedArguments(a, "-h|--help"))
             {
                 tw.WriteLine("Executes commands in other UDIMAS instance. \nRemote instance must have UDINet installed.");
                 tw.WriteLine("Usage:");

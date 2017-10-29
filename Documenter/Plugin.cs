@@ -20,7 +20,7 @@ namespace Documenter
         }
         private (int, string) Cmd(InterpreterIOPipeline tw, string[] args)
         {
-            if (CmdInterpreter.IsWellFormatterArguments(args, "-h|--help"))
+            if (CmdInterpreter.IsWellFormattedArguments(args, "-h|--help"))
             {
                 CmdInterpreter.PrintLines(tw, new string[] {
                     "generates syntax documentation. ",
@@ -30,7 +30,7 @@ namespace Documenter
                     " docs *\t\tgenerates documentation of ALL .NET framework and other items. TAKES A LONG TIME"
                 });
             }
-            else if (CmdInterpreter.IsWellFormatterArguments(args, "\\S+"))
+            else if (CmdInterpreter.IsWellFormattedArguments(args, "\\S+"))
             {
                 //generate documentation
                 Generate(tw, args[0]);
