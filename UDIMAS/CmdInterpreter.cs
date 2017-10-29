@@ -92,7 +92,7 @@ namespace UDIMAS
         /// <param name="regexFilters">an array containing <see cref="Regex"/> filters. 
         /// Every <paramref name="args"/> item has to match an item in corresponding position in this array</param>
         /// <returns>Whether every <paramref name="args"/> item matches every <paramref name="regexFilters"/>. True if it matches, otherwise false</returns>
-        public static bool IsWellFormatterArguments(string[] args, params string[] regexFilters)
+        public static bool IsWellFormattedArguments(string[] args, params string[] regexFilters)
         {
             if(args.Length != regexFilters.Length)
             {
@@ -173,7 +173,15 @@ namespace UDIMAS
                 {
                     r = (NOINPUTSUPPORTED, "");
                 }
-                else r = _commands[cmd].Method(Output, args);
+                else try
+                    {
+                        r = _commands[cmd].Method(Output, args);
+                    }
+                    catch(Exception e)
+                    {
+                        Udimas.LogError(Output, e);
+                        return (3, e.Message);
+                    }
                 instLog.Debug($"Command '{cmd}' returned with code {r.Item1}");
                 return r;
             }
