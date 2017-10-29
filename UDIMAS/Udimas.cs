@@ -11,6 +11,9 @@ namespace UDIMAS
     /// </summary>
     public static class Udimas
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger
+            (System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// Gets the time UDIMAS started
         /// </summary>
@@ -166,6 +169,16 @@ namespace UDIMAS
                 consoleExists = false;
             }
             return consoleExists;
+        }
+
+        /// <summary>
+        /// Logs an exception into log and notifies into console about it
+        /// </summary>
+        /// <param name="exception"></param>
+        public static void LogError(InterpreterIOPipeline tw, Exception exception)
+        {
+            log.Error(exception.Message, exception);
+            tw.WriteLine("An excetion has happened. See the log for more details");
         }
     }
 }
