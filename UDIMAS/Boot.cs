@@ -124,7 +124,9 @@ namespace UDIMAS
                         items.Add(m.Groups["key"].Value, m.Groups["value"].Value);
                 return items;
             }
-            var args = ParseString(Environment.CommandLine);
+            var args = new Dictionary<string, string>(ParseString(Environment.CommandLine), StringComparer.InvariantCultureIgnoreCase);
+
+            
 
             // parameters here
             if (args.ContainsKey("PluginDir")) PluginPath = args["PluginDir"].Trim();
@@ -193,9 +195,14 @@ namespace UDIMAS
                 Directory.CreateDirectory(dirPath);
             LoadPluginsFromDir(dirPath);
 
-            if(PluginPath != null)
+            if(PluginPath != null 
+                && !string.IsNullOrWhiteSpace(PluginPath))
             {
-                LoadPluginsFromDir(PluginPath);
+                if (PluginPath.StartsWith("~")) {
+                    string str = Regex.Match(PluginPath, @"^~[/\\]?(.+)$").Groups[1].Value;
+                    LoadPluginsFromDir(Path.Combine(Udimas.SystemDirectory, str));
+                }
+                else LoadPluginsFromDir(PluginPath);
             }
         }
 
@@ -204,13 +211,15 @@ namespace UDIMAS
             try
             {   // path is not well formed windows folder path
                 Path.GetFullPath(pluginDirectory);
-                if (!Path.IsPathRooted(pluginDirectory)) return;
+                if (!Path.IsPathRooted(pluginDirectory))
+                {
+                    throw new Exception();
+                }
+
+                if (!Directory.Exists(pluginDirectory)) throw new Exception();
             }
-            catch { return; }
-
-            //setup directory
-            if (!Directory.Exists(pluginDirectory)) return;
-
+            catch { log.Error("Error loading plugins from directory " + pluginDirectory); return; }
+            
             string relative = pluginDirectory.StartsWith(Udimas.SystemDirectory) ? 
                 pluginDirectory.Substring(Udimas.SystemDirectory.Length+1) : pluginDirectory;
             log.Debug($"Loading external plugins from {relative}..");
@@ -257,13 +266,13 @@ namespace UDIMAS
             count = 0;
             var engine = Python.CreateEngine();
 
-            //enumerate all .lua files in /plugins/
+            //enumerate all .py files in /plugins/
             foreach (string sfile in Directory
                                     .EnumerateFiles(pluginDirectory, "*", SearchOption.AllDirectories)
                                     .Where(file => file.ToLower().EndsWith(".py")))
             {
                 string name = new FileInfo(sfile).Name;
-                if (IgnoredPlugins.Contains(name)) continue;
+                if (IgnoredPlugins.Contains(name)) { log.Info("Ignoring plugin " + name); continue; }
                 count++;
                 log.Info($"Loading {name}..");
 
@@ -276,7 +285,7 @@ namespace UDIMAS
                 }
                 catch (Microsoft.Scripting.SyntaxErrorException e)
                 {
-                    log.Error($"Error in {new FileInfo(sfile).Name} (line {e.Line}, column {e.Column}): {e.Message}");
+                    log.Error($"Error in {name} (line {e.Line}, column {e.Column}): {e.Message}");
                     log.Error("  " +e.SourceCode.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)[e.Line - 1].TrimStart());
                 }
                 catch(Exception e)
